@@ -196,6 +196,10 @@ class Manager(Worker):
         worker_str = super().__str__()
         return f"""{self.position} {worker_str}"""
 
+    def set_salary_to_worker(self, worker, salary_value):
+        worker.salary = salary_value
+        return worker.salary
+
 
 class TestManager(unittest.TestCase):
 
@@ -214,6 +218,29 @@ class TestManager(unittest.TestCase):
                 gender: M""",
                 self.manager.__str__())
 
+    def test_set_salary_to_worker(self):
+        worker = Worker(gender='m')
+        self.manager.set_salary_to_worker(worker, 100)
+        self.assertEqual(100, worker.salary)
+
+    def test_set_salary_to_programmer(self):
+        programmer = Programmer(gender='f')
+        self.manager.set_salary_to_worker(programmer, 500)
+        self.assertEqual(500, programmer.salary)
+
+
+class TestProgrammer(unittest.TestCase):
+    def setUp(self):
+        self.programmer = Programmer(first_name='Anne',
+                                     last_name='Doe',
+                                     salary=250,
+                                     level=0,
+                                     gender='f')
+
+    def test_do_programming(self):
+        code = self.programmer.do_programming()
+        self.assertEqual("<p> look my code is awsome </p>", code)
+
 
 class DataAnalytics(Worker):
 
@@ -226,7 +253,13 @@ class DataAnalytics(Worker):
         return f"""{self.position} {worker_str}"""
 
 
-class Programmer(Worker):
+class SoftwareDeveloper:
+
+    def do_programming(self):
+        return"<p> look my code is awsome </p>"
+
+
+class Programmer(Worker, SoftwareDeveloper):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -237,7 +270,7 @@ class Programmer(Worker):
         return f"""{self.position} {worker_str}"""
 
 
-class SeniorProgrammer(Worker):
+class SeniorProgrammer(Worker, SoftwareDeveloper):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
