@@ -97,9 +97,13 @@ class Worker:
         self.salary = kwargs.get('salary', 0)
         if not isinstance(self.salary, int):
             raise ValueError("worker's salary has to be an integer")
+        elif isinstance(self.salary, int) and self.salary < 0:
+            raise ValueError("worker's salary has to be a positive integer")
         self.level = kwargs.get('level', 0)
         if not isinstance(self.level, int):
-            raise ValueError("worker's lever has to be an integer")
+            raise ValueError("worker's level has to be integer")
+        elif isinstance(self.level, int) and self.level < 0:
+            raise ValueError("worker's level has to be positive integer")
         self.gender = kwargs.get('gender', '')
         if self.gender.lower() not in self.GENDER:
             raise ValueError(
@@ -113,7 +117,17 @@ class Worker:
 
     def level_up_workers_level(self):
         self.level += 1
-        return self.level
+        return abs(self.level)
+
+    def increase_workers_salary(self, value=None, percentage=None):
+        if value is not None and percentage is not None:
+            raise ValueError(
+                "You have to choose or value or percentage to increase salary")
+        elif value is not None and percentage is None:
+            self.salary += value
+        else:
+            self.salary = self.salary + self.salary * percentage
+        return self.salary
 
 
 class TestWorker(unittest.TestCase):
@@ -138,18 +152,100 @@ class TestWorker(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.worker.__init__(salary='hundred')
 
+    def test_raises_error_salary_is_integer_lower_then_0_when_init(self):
+        with self.assertRaises(ValueError):
+            self.worker.__init__(salary=(-5200))
+
     def test_raises_error_level_is_not_integer_when_init(self):
         with self.assertRaises(ValueError):
             self.worker.__init__(level='one')
+
+    def test_raises_error_level_is_not_positive_int_when_init(self):
+        with self.assertRaises(ValueError):
+            self.worker.__init__(level=(-99))
 
     def test_raises_error_gender_is_not_GENDER_choice_when_init(self):
         with self.assertRaises(ValueError):
             self.worker.__init__(gender='man')
 
+    def test_increase_workers_salary_when_value(self):
+        self.worker.increase_workers_salary(2000)
+        self.assertEqual(2140, self.worker.salary)
+
+    def test_increase_workers_salary_when_percentage(self):
+        self.worker.increase_workers_salary(percentage=0.1)
+        self.assertEqual(154, self.worker.salary)
+
+    def test_increase_workers_salary_when_value_and_percentage(self):
+        with self.assertRaises(ValueError):
+            self.worker.increase_workers_salary(value=100, percentage=0.2)
+
     def test_level_up_two_times_worker(self):
         self.worker.level_up_workers_level()
         self.worker.level_up_workers_level()
         self.assertEqual(3, self.worker.level)
+
+
+class Manager(Worker):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.position = __class__.__name__
+
+    def __str__(self):
+        worker_str = super().__str__()
+        return f"""{self.position} {worker_str}"""
+
+
+class TestManager(unittest.TestCase):
+
+    def setUp(self):
+        self.manager = Manager(first_name='Harry',
+                               last_name='Potter',
+                               salary=250,
+                               level=3,
+                               gender='M')
+
+    def test_string_method(self):
+        self.assertEqual(
+"""Manager Harry Potter,
+                salary: 250,
+                level: 3,
+                gender: M""",
+                self.manager.__str__())
+
+
+class DataAnalytics(Worker):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.position = __class__.__name__
+
+    def __str__(self):
+        worker_str = super().__str__()
+        return f"""{self.position} {worker_str}"""
+
+
+class Programmer(Worker):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.position = __class__.__name__
+
+    def __str__(self):
+        worker_str = super().__str__()
+        return f"""{self.position} {worker_str}"""
+
+
+class SeniorProgrammer(Worker):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.position = __class__.__name__
+
+    def __str__(self):
+        worker_str = super().__str__()
+        return f"""{self.position} {worker_str}"""
 
 
 if __name__ == "__main__":
