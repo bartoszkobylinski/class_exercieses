@@ -1,6 +1,6 @@
 import unittest
 # 1
-# Write a class representing a 2D point: Point2D. Constructor should have two 
+# Write a class representing a 2D point: Point2D. Constructor should have two
 # arguments x, y define a _str_ method for that class
 # write a method calculating a distance between two points
 
@@ -21,7 +21,8 @@ class Point2D:
         """
         calculate distance beetwen two points
         """
-        return f"Distance beetwen two points is {self.x - x}x and {self.y - y}y"
+        return (
+            f"Distance beetwen two points is {self.x - x}x and {self.y - y}y")
 
 
 class TestPoint2D(unittest.TestCase):
@@ -37,9 +38,10 @@ class TestPoint2D(unittest.TestCase):
             "Distance beetwen two points is 1x and 2y",
             self.point.calculate_distance_beetwen_two_points(2, 3))
 
-# Write a class which inherits from Print2D class and implements 3D point, 
-# the arguments should be x, y, z write a _str_ method for that class (you can use super)
-# write a method calculating a distance between two points
+# Write a class which inherits from Print2D class and implements 3D point,
+# the arguments should be x, y, z write a _str_ method for that class 
+# (you can use super) write a method calculating a distance between two points
+
 
 class Point3D(Point2D):
 
@@ -54,11 +56,12 @@ class Point3D(Point2D):
         """
         calculate distance beetwen two points
         """
-        return f"Distance beetwen two points is {self.x - x}x {self.y - y}y {self.z -z}z"
+        return
+            (f"Distance beetwen two points is {self.x - x}x {self.y - y}y {self.z -z}z")
 
 
 class TestPoint3D(unittest.TestCase):
-    
+
     def setUp(self):
         self.point = Point3D(2, 8, 5)
 
@@ -89,7 +92,7 @@ class Worker:
         self.level = level
         self.gender = gender
 
-        
+
 
 
 
