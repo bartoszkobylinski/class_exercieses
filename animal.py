@@ -89,18 +89,30 @@ class TestPoint3D(unittest.TestCase):
 
 class Worker:
 
+    GENDER = ['f', 'm', 'n']
+
     def __init__(self, **kwargs):
         self.first_name = kwargs.get('first_name', '')
         self.last_name = kwargs.get('last_name', '')
-        self.salary = kwargs.get('salary', 0)
-        self.level = kwargs.get('level', 0)
+        self.salary = abs(kwargs.get('salary', 0))
+        if not isinstance(self.salary, int):
+            raise ValueError("worker's salary has to be an integer")
+        self.level = abs(kwargs.get('level', 0))
+        if not isinstance(self.level, int):
+            raise ValueError("worker's lever has to be an integer")
         self.gender = kwargs.get('gender', '')
+        if self.gender.lower() not in self.GENDER:
+            raise ValueError(
+                "worker's gender can be only f-female, m-male, n-non binary")
 
     def __str__(self):
         return f"""{self.first_name} {self.last_name},
                 salary: {self.salary},
                 level: {self.level},
                 gender: {self.gender}"""
+
+    def level_up_workers_level(self):
+        return int(self.level) + 1
 
 
 class TestWorker(unittest.TestCase):
@@ -111,11 +123,6 @@ class TestWorker(unittest.TestCase):
                              salary=140,
                              level=1,
                              gender='M')
-        self.worker1 = Worker(
-                             first_name='Henry',
-                             salary='twenty',
-                             level='eight',
-                             gender='F')
 
     def test_string_method_worker_instance(self):
         self.assertEqual(
@@ -132,6 +139,17 @@ class TestWorker(unittest.TestCase):
                 gender: F""",
             self.worker1.__str__()
         )
+
+    def test_level_up_worker(self):
+        self.assertEqual(2, self.worker.level_up_workers_level())
+
+    def test_level_up_worker1(self):
+        self.assertEqual(9, self.worker1.level_up_workers_level())
+
+    def test_level_up_two_times_worker(self):
+        self.worker.level_up_workers_level()
+        self.worker.level_up_workers_level()
+        self.assertEqual(3, self.worker.level)
 
 
 if __name__ == "__main__":
