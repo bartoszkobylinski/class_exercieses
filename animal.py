@@ -112,7 +112,8 @@ class Worker:
                 gender: {self.gender}"""
 
     def level_up_workers_level(self):
-        return self.level + 1
+        self.level += 1
+        return self.level
 
 
 class TestWorker(unittest.TestCase):
@@ -136,11 +137,11 @@ class TestWorker(unittest.TestCase):
     def test_raises_error_salary_is_not_integer_when_init(self):
         with self.assertRaises(ValueError):
             self.worker.__init__(salary='hundred')
-        
+
     def test_raises_error_level_is_not_integer_when_init(self):
         with self.assertRaises(ValueError):
             self.worker.__init__(level='one')
-    
+
     def test_raises_error_gender_is_not_GENDER_choice_when_init(self):
         with self.assertRaises(ValueError):
             self.worker.__init__(gender='man')
