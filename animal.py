@@ -88,12 +88,12 @@ class TestPoint3D(unittest.TestCase):
 
 class Worker:
 
-    def __init__(self, first_name, last_name, salary, level, gender):
-        self.first_name = first_name
-        self.last_name = last_name
-        self.salary = salary
-        self.level = level
-        self.gender = gender
+    def __init__(self, **kwargs):
+        self.first_name = kwargs.get('first_name', '')
+        self.last_name = kwargs.get('last_name', '')
+        self.salary = kwargs.get('salary', 0)
+        self.level = kwargs.get('level', 0)
+        self.gender = kwargs.get('gender', '')
 
 
 if __name__ == "__main__":
