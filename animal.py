@@ -71,7 +71,8 @@ class TestPoint3D(unittest.TestCase):
 
     def test_calculate_distance_beetwen_two_points(self):
         self.assertEqual(
-                        "Distance beetwen two points is 1x 7y 4z",
+                        """Distance beetwen two points is
+                1x 7y 4z""",
                         self.point.calculate_distance_beetwen_two_points(
                             1, 1, 1))
 
@@ -94,6 +95,43 @@ class Worker:
         self.salary = kwargs.get('salary', 0)
         self.level = kwargs.get('level', 0)
         self.gender = kwargs.get('gender', '')
+
+    def __str__(self):
+        return f"""{self.first_name} {self.last_name},
+                salary: {self.salary},
+                level: {self.level},
+                gender: {self.gender}"""
+
+
+class TestWorker(unittest.TestCase):
+
+    def setUp(self):
+        self.worker = Worker(first_name='John',
+                             last_name='Paul',
+                             salary=140,
+                             level=1,
+                             gender='M')
+        self.worker1 = Worker(
+                             first_name='Henry',
+                             salary='twenty',
+                             level='eight',
+                             gender='F')
+
+    def test_string_method_worker_instance(self):
+        self.assertEqual(
+"""John Paul,
+                salary: 140,
+                level: 1,
+                gender: M""",
+            self.worker.__str__()
+             )
+        self.assertEqual(
+"""Henry ,
+                salary: twenty,
+                level: eight,
+                gender: F""",
+            self.worker1.__str__()
+        )
 
 
 if __name__ == "__main__":
