@@ -94,10 +94,10 @@ class Worker:
     def __init__(self, **kwargs):
         self.first_name = kwargs.get('first_name', '')
         self.last_name = kwargs.get('last_name', '')
-        self.salary = abs(kwargs.get('salary', 0))
+        self.salary = kwargs.get('salary', 0)
         if not isinstance(self.salary, int):
             raise ValueError("worker's salary has to be an integer")
-        self.level = abs(kwargs.get('level', 0))
+        self.level = kwargs.get('level', 0)
         if not isinstance(self.level, int):
             raise ValueError("worker's lever has to be an integer")
         self.gender = kwargs.get('gender', '')
@@ -112,7 +112,7 @@ class Worker:
                 gender: {self.gender}"""
 
     def level_up_workers_level(self):
-        return int(self.level) + 1
+        return self.level + 1
 
 
 class TestWorker(unittest.TestCase):
@@ -132,19 +132,18 @@ class TestWorker(unittest.TestCase):
                 gender: M""",
             self.worker.__str__()
              )
-        self.assertEqual(
-"""Henry ,
-                salary: twenty,
-                level: eight,
-                gender: F""",
-            self.worker1.__str__()
-        )
 
-    def test_level_up_worker(self):
-        self.assertEqual(2, self.worker.level_up_workers_level())
-
-    def test_level_up_worker1(self):
-        self.assertEqual(9, self.worker1.level_up_workers_level())
+    def test_raises_error_salary_is_not_integer_when_init(self):
+        with self.assertRaises(ValueError):
+            self.worker.__init__(salary='hundred')
+        
+    def test_raises_error_level_is_not_integer_when_init(self):
+        with self.assertRaises(ValueError):
+            self.worker.__init__(level='one')
+    
+    def test_raises_error_gender_is_not_GENDER_choice_when_init(self):
+        with self.assertRaises(ValueError):
+            self.worker.__init__(gender='man')
 
     def test_level_up_two_times_worker(self):
         self.worker.level_up_workers_level()
