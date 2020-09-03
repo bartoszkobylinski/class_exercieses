@@ -244,6 +244,8 @@ class TestProgrammer(unittest.TestCase):
 
 class DataAnalytics(Worker):
 
+    DATA_TYPE = ['l', 'd']
+    
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.position = __class__.__name__
@@ -251,6 +253,41 @@ class DataAnalytics(Worker):
     def __str__(self):
         worker_str = super().__str__()
         return f"""{self.position} {worker_str}"""
+    
+    def create_and_return_data(self, data_type):
+        if data_type not in self.DATA_TYPE:
+            raise ValueError("""You can choose two data types:
+                             l - list
+                             d - dictionaries""")
+        elif data_type == "l":
+            return ['some data', 'data']
+        else:
+            return {'somy_key': 'some_value'}
+
+
+class TestDataAnalitycs(unittest.TestCase):
+
+    def setUp(self):
+        self.data_analytics = DataAnalytics(
+            firste_name='Paul',
+            last_name='Smith',
+            level=2,
+            salary=400,
+            gender='m'
+        )
+    
+    def test_create_and_return_data_if_not_valid(self):
+        with self.assertRaises(ValueError):
+            self.data_analytics.create_and_return_data('sh')
+    
+    def test_create_and_return_data_as_list(self):
+        created_list = self.data_analytics.create_and_return_data('l')
+        self.assertIsInstance(created_list, list)
+
+    def test_create_and_return_data_as_dictionary(self):
+        created_dict = self.data_analytics.create_and_return_data('d')
+        self.assertIsInstance(created_dict, dict)
+        
 
 
 class SoftwareDeveloper:
