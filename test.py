@@ -13,7 +13,7 @@ class TestPoint2D(unittest.TestCase):
 
     def test_calculate_distance_beetwen_two_points(self):
         self.assertEqual(
-            "Distance beetwen two points is 1x and 2y",
+            2.236,
             self.point.calculate_distance_beetwen_two_points(2, 3))
 
 
@@ -27,8 +27,7 @@ class TestPoint3D(unittest.TestCase):
 
     def test_calculate_distance_beetwen_two_points(self):
         self.assertEqual(
-                        """Distance beetwen two points is
-                1x 7y 4z""",
+                        8.124,
                         self.point.calculate_distance_beetwen_two_points(
                             1, 1, 1))
 

@@ -1,3 +1,4 @@
+from math import sqrt
 
 # 1
 # Write a class representing a 2D point: Point2D. Constructor should have two
@@ -21,8 +22,8 @@ class Point2D:
         """
         calculate distance beetwen two points
         """
-        return (
-            f"Distance beetwen two points is {self.x - x}x and {self.y - y}y")
+        distance = round(sqrt((y -self.y)**2 +(self.x - x)**2), 3)
+        return distance
 
 # Write a class which inherits from Print2D class and implements 3D point,
 # the arguments should be x, y, z write a _str_ method for that class
@@ -42,8 +43,8 @@ class Point3D(Point2D):
         """
         calculate distance beetwen two points
         """
-        return (f"""Distance beetwen two points is
-                {self.x - x}x {self.y - y}y {self.z -z}z""")
+        distance = round(sqrt((x - self.x)**2 + (y - self.y)**2 + (z - self.z)**2), 3)
+        return distance
 
 # 3
 # Write a Worker class which will take first_name, last_name, salary, level
@@ -86,7 +87,6 @@ class Worker:
 
     def level_up_workers_level(self):
         self.level += 1
-        return abs(self.level)
 
     def increase_workers_salary(self, value=None, percentage=None):
         if value is not None and percentage is not None:
@@ -96,7 +96,6 @@ class Worker:
             self.salary += value
         else:
             self.salary = self.salary + self.salary * percentage
-        return self.salary
 
 
 class Manager(Worker):
@@ -111,7 +110,6 @@ class Manager(Worker):
 
     def set_salary_to_worker(self, worker, salary_value):
         worker.salary = salary_value
-        return worker.salary
 
 
 class DataAnalytics(Worker):
