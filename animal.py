@@ -93,8 +93,12 @@ class Worker:
         if value is not None and percentage is not None:
             raise ValueError(
                 "You have to choose or value or percentage to increase salary")
+        elif not isinstance(value, int) and percentage is None:
+            raise TypeError("Value has to be an integer")
         elif value is not None and percentage is None:
             self.salary += value
+        elif not isinstance(percentage, float) and value is None:
+            raise TypeError('Percentage has to be an float type variable')
         else:
             self.salary = self.salary + self.salary * percentage
 
