@@ -22,7 +22,7 @@ class Point2D:
         """
         calculate distance beetwen two points
         """
-        distance = round(sqrt((y -self.y)**2 +(self.x - x)**2), 3)
+        distance = round(sqrt((y - self.y)**2 + (self.x - x)**2), 3)
         return distance
 
 # Write a class which inherits from Print2D class and implements 3D point,
@@ -43,7 +43,8 @@ class Point3D(Point2D):
         """
         calculate distance beetwen two points
         """
-        distance = round(sqrt((x - self.x)**2 + (y - self.y)**2 + (z - self.z)**2), 3)
+        distance = round(sqrt(
+            (x - self.x)**2 + (y - self.y)**2 + (z - self.z)**2), 3)
         return distance
 
 # 3
