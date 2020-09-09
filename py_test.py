@@ -53,29 +53,20 @@ class TestWorker:
         worker = Worker(**kwargs)
         assert str(worker) == expected
 
-    def test_instance_of_class_error_when_gender_wrong(self):
+    @pytest.mark.parametrize(
+        "key,value",
+        [
+            ("gender", "bbbb"),
+            ("gender", "f"),
+            ("salary", "hundred"),
+            ("salary", -2000),
+            ("level", "three"),
+            ("level", -9)
+        ]
+    )
+    def test_instantiation_of_class(self, key, value):
         with pytest.raises(ValueError):
-            worker = Worker(gender='bbbb')
-
-    def test_instance_creation_of_class_fail_of_correct_variable(self):
-        with pytest.raises(ValueError):
-            worker = Worker(gender='f')
-
-    def test_instance_creation_of_class_when_salary_not_int(self):
-        with pytest.raises(ValueError):
-            worker = Worker(salary="hundred")
-
-    def test_instance_creation_of_class_when_salary_negativ_int(self):
-        with pytest.raises(ValueError):
-            worker = Worker(salary=-(2000))
-
-    def test_instance_creation_of_class_when_level_not_int(self):
-        with pytest.raises(ValueError):
-            worker = Worker(level='three')
-
-    def test_instance_creation_of_class_when_level_negativ_int(self):
-        with pytest.raises(ValueError):
-            worker = Worker(level=(-9))
+            Worker(key=value)
 
     def test_level_up_workers_level(self):
         worker = Worker(gender='f', level=1)
