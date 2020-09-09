@@ -61,8 +61,24 @@ class Point3D(Point2D):
 class Worker:
 
     GENDER = ['f', 'm', 'n']
+    POSITION = {"m": "Manager",
+                "p": "Programmer",
+                "s": "Senior Programmer",
+                "d": "Data Analytics"
+                }
 
     def __init__(self, **kwargs):
+        self.position = kwargs.get('position', '')
+        if self.position.lower() not in list(self.POSITION.keys()):
+            raise ValueError("""Worker position can be only:
+                            m - Manager,
+                            p - Programmer,
+                            s - Senior Programmer,
+                            d - Data Analytics
+                            """)
+        else:
+            position = kwargs.get('position', '')
+            self.position = self.POSITION.get(position, '')
         self.first_name = kwargs.get('first_name', '')
         self.last_name = kwargs.get('last_name', '')
         self.salary = kwargs.get('salary', 0)
@@ -81,7 +97,7 @@ class Worker:
                 "worker's gender can be only f-female, m-male, n-non binary")
 
     def __str__(self):
-        return f"""{self.first_name} {self.last_name},
+        return f"""{self.position} {self.first_name} {self.last_name},
                 salary: {self.salary},
                 level: {self.level},
                 gender: {self.gender}"""
@@ -104,14 +120,12 @@ class Worker:
 
 
 class Manager(Worker):
+    
+    # TODO
+    # position przesunac do Workera i usunac __str__ 
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.position = __class__.__name__
-
-    def __str__(self):
-        worker_str = super().__str__()
-        return f"""{self.position} {worker_str}"""
 
     def set_salary_to_worker(self, worker, salary_value):
         worker.salary = salary_value
@@ -123,22 +137,23 @@ class DataAnalytics(Worker):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.position = __class__.__name__
-
-    def __str__(self):
-        worker_str = super().__str__()
-        return f"""{self.position} {worker_str}"""
 
     def create_and_return_data(self, data_type):
-        if data_type not in self.DATA_TYPE:
-            raise ValueError("""You can choose two data types:
+        if not isinstance(data_type, str):
+            raise TypeError("""You can choose two data types:
                              l - list
                              d - dictionaries""")
-        elif data_type == "l":
-            return ['some data', 'data']
         else:
-            return {'somy_key': 'some_value'}
-
+            if data_type.lower() not in self.DATA_TYPE:
+                raise ValueError("""You can choose two data types:
+                             l - list
+                             d - dictionaries""")
+            else:
+                if data_type.lower() == 'l':
+                    return ['some data', 'data', 'more data']
+                else:
+                    return {'somy_key': 'some_value'}
+        
 
 class SoftwareDeveloper:
 
@@ -150,19 +165,9 @@ class Programmer(Worker, SoftwareDeveloper):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.position = __class__.__name__
-
-    def __str__(self):
-        worker_str = super().__str__()
-        return f"""{self.position} {worker_str}"""
 
 
 class SeniorProgrammer(Worker, SoftwareDeveloper):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.position = __class__.__name__
-
-    def __str__(self):
-        worker_str = super().__str__()
-        return f"""{self.position} {worker_str}"""

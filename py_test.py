@@ -43,11 +43,11 @@ class TestPoint3D:
 class TestWorker:
 
     @pytest.mark.parametrize("expected, kwargs", [(
-        """John Doe,
+        """Programmer John Doe,
                 salary: 0,
                 level: 0,
                 gender: m""",
-        {"first_name": "John", "last_name": "Doe", "gender": "m"})
+        {"position": "p", "first_name": "John", "last_name": "Doe", "gender": "m"})
         ])
     def test_string_method_class(self, expected, kwargs):
         worker = Worker(**kwargs)
@@ -69,34 +69,34 @@ class TestWorker:
             Worker(key=value)
 
     def test_level_up_workers_level(self):
-        worker = Worker(gender='f', level=1)
+        worker = Worker(position="p", gender='f', level=1)
         worker.level_up_workers_level()
         worker.level_up_workers_level()
         assert worker.level == 3
 
     def test_increase_workers_salary_when_value_and_percentage(self):
         with pytest.raises(ValueError):
-            worker = Worker(gender='f')
+            worker = Worker(position='p', gender='f')
             worker.increase_workers_salary(percentage=0.2, value=2500)
 
     def test_increase_workers_salary_when_value(self):
-        worker = Worker(gender='f', salary=100)
+        worker = Worker(position='s', gender='f', salary=100)
         worker.increase_workers_salary(value=14)
         assert worker.salary == 114
 
     def test_increase_workers_salary_when_percentage(self):
-        worker = Worker(gender='f', salary=100)
+        worker = Worker(position='m', gender='f', salary=100)
         worker.increase_workers_salary(percentage=0.05)
         assert worker.salary == 105
 
     def test_increase_workers_salary_when_percentage_is_not_float(self):
         with pytest.raises(TypeError):
-            worker = Worker(gender='f', salary=100)
+            worker = Worker(position='p', gender='f', salary=100)
             worker.increase_workers_salary(percentage='five')
 
     def test_increase_workers_salary_when_value_is_not_int(self):
         with pytest.raises(TypeError):
-            worker = Worker(gender='m', salary=200)
+            worker = Worker(position='m', gender='m', salary=200)
             worker.increase_workers_salary(percentage=2)
 
 
@@ -107,15 +107,15 @@ class TestManager:
                 salary: 0,
                 level: 0,
                 gender: m""",
-        {"first_name": "John", "last_name": "Doe", "gender": "m"})
+        {"position": "m", "first_name": "John", "last_name": "Doe", "gender": "m"})
         ])
     def test_string_method_class(self, expected, kwargs):
         manager = Manager(**kwargs)
         assert str(manager) == expected
 
     def test_set_salary_to_worker(self):
-        worker = Worker(gender='f')
-        manager = Manager(gender='m')
+        worker = Programmer(position='p', gender='f')
+        manager = Manager(position='m', gender='m')
         manager.set_salary_to_worker(worker=worker, salary_value=150)
         assert worker.salary == 150
 
@@ -123,28 +123,36 @@ class TestManager:
 class TestDataAnalytics:
 
     @pytest.mark.parametrize("expected, kwargs", [(
-        """DataAnalytics John Doe,
+        """Data Analytics John Doe,
                 salary: 0,
                 level: 0,
                 gender: m""",
-        {"first_name": "John", "last_name": "Doe", "gender": "m"})
+        {"position": "d", "first_name": "John", "last_name": "Doe", "gender": "m"})
         ])
     def test_string_method_class(self, expected, kwargs):
         data_analytics = DataAnalytics(**kwargs)
         assert str(data_analytics) == expected
 
-    def test_create_and_return_data_when_data_type_incorrect(self):
+    @pytest.mark.parametrize(
+        "data_type, value",
+        [
+            ("data_type", 'bbb'),
+            ("data_type", "list")
+        ]
+    )
+    def test_create_and_return_data_when_data_type_incorrect(
+            self, data_type, value):
         with pytest.raises(ValueError):
-            data_analytics = DataAnalytics(gender='f')
-            data_analytics.create_and_return_data(data_type=5)
+            data_analytics = DataAnalytics(position='d',gender='f')
+            data_analytics.create_and_return_data(data_type=value)
 
     def test_create_and_return_data_when_data_type_list(self):
-        data_analytics = DataAnalytics(gender='m')
+        data_analytics = DataAnalytics(position='d', gender='m')
         list_data = data_analytics.create_and_return_data(data_type='l')
         assert isinstance(list_data, list)
 
     def test_create_and_return_data_when_data_type_dict(self):
-        data_analytics = DataAnalytics(gender='m')
+        data_analytics = DataAnalytics(position='d', gender='m')
         dict_data = data_analytics.create_and_return_data(data_type='d')
         assert isinstance(dict_data, dict)
 
@@ -156,14 +164,14 @@ class TestProgrammer:
                 salary: 0,
                 level: 0,
                 gender: m""",
-        {"first_name": "John", "last_name": "Doe", "gender": "m"})
+        {"position": "p", "first_name": "John", "last_name": "Doe", "gender": "m"})
         ])
     def test_string_method_class(self, expected, kwargs):
         programmer = Programmer(**kwargs)
         assert str(programmer) == expected
 
     def test_if_programmer_do_programming(self):
-        programmer = Programmer(gender='f')
+        programmer = Programmer(position='p', gender='f')
         html_code = programmer.do_programming()
         assert html_code == '<p> look my code is awsome </p>'
 
@@ -171,17 +179,17 @@ class TestProgrammer:
 class TestSeniorProgrammer:
 
     @pytest.mark.parametrize("expected, kwargs", [(
-        """SeniorProgrammer John Doe,
+        """Senior Programmer John Doe,
                 salary: 0,
                 level: 0,
                 gender: m""",
-        {"first_name": "John", "last_name": "Doe", "gender": "m"})
+        {"position": "s", "first_name": "John", "last_name": "Doe", "gender": "m"})
         ])
     def test_string_method_class(self, expected, kwargs):
         programmer = SeniorProgrammer(**kwargs)
         assert str(programmer) == expected
 
     def test_if_programmer_do_programming(self):
-        programmer = SeniorProgrammer(gender='f')
+        programmer = SeniorProgrammer(position='d', gender='f')
         html_code = programmer.do_programming()
         assert html_code == '<p> look my code is awsome </p>'
